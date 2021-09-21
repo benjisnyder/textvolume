@@ -1,0 +1,163 @@
+<div id="content">
+  <h1 id="percentage"></h1>
+  <p id="description"></p>
+  <button id="detect" class="light">Detect Text</button>
+  <button id="calculate">Calculate</button>
+</div>
+<div id="subContent"> 
+  <a id="showMore" href="">Show Info</a>
+  <div id="subContentToggle">
+    <h3>Instructions</h3>
+    <ol>
+      <li>Grab the Figma frame you're interested in by the reigns.</li>
+      <li>Give the "Detect Text" button a try or start drawing rectangles all over the place, focusing on the areas that have text.</li>
+      <li>Set the rectangles to have <em>#ff0000 fill with 0.5 opacity</em>. This is important because it's how the plugin recognizes your rectangles from all the other goodies in the frame. If you happen to have rectangles with this fill already in your frame, you'll want to change them temporarily.</li>
+      <li>Once you have your beautiful rectangles accurately covering all of the text, click that "Calculate" button.</li>
+    </ol>
+    <p><strong>Note:</strong> Detect Text will render rectangles on top of any existing text boxes. Those text boxes might not be the same size as the text you care to measure, so be sure to double check the rectangle sizes.</p>
+    <h3>About</h3>
+    <p>Research has shown...</p>
+  </div>
+</div>
+<script>
+let showInstructions = false;
+
+setState({
+  percent : '0%',
+  value : 0
+});
+
+document.getElementById('showMore').onclick = (evt) => {
+  let toggleEl = document.getElementById('subContent');
+
+  showInstructions = !showInstructions;
+  toggleEl.className = ''+showInstructions;
+  
+  evt.preventDefault();
+  return false;
+}
+
+document.getElementById('detect').onclick = () => {
+  parent.postMessage({ pluginMessage: { type: 'detect' } }, '*');
+}
+
+document.getElementById('calculate').onclick = () => {
+  parent.postMessage({ pluginMessage: { type: 'calculate' } }, '*');
+}
+
+onmessage = event => {
+  let data = event.data.pluginMessage.data;
+
+  setState({
+    percent : data.percent,
+    value : data.value
+  });
+}
+
+function setState(data) {
+  let contentEl = document.getElementById('content');
+  let percentageEl = document.getElementById('percentage');
+  let descriptionEl = document.getElementById('description');
+  let descriptionText = '';
+  let volumeLevel = 'none';
+
+  if (data.value === 0) {
+    descriptionText = "No text detected."
+  } else if (data.value < 15) {
+    descriptionText = "This is a fine amount of text."
+    volumeLevel = "low";
+  } else if (data.value < 25) {
+    descriptionText = "Not bad, you could add more if you wanted."
+    volumeLevel = "low";
+  } else if (data.value < 36) {
+    descriptionText = "The text volume is getting a little heavy."
+    volumeLevel = "medium";
+  } else if (data.value > 36) {
+    descriptionText = "Research has shown that this text volume can increase cognitive load."
+    volumeLevel = "high";
+  }
+
+  percentageEl.innerHTML = data.percent;
+  descriptionEl.innerHTML = descriptionText;
+  contentEl.className = volumeLevel;
+}
+</script>
+
+<style>
+* {
+	font:14px/18px Inter,sans-serif;
+}
+
+#content, #subContent {
+  padding: 5px 5px 15px;
+}
+
+#subContent.true #showMore {
+  text-decoration: underline;
+}
+
+#subContentToggle {
+  display: none;
+}
+
+#subContent.true #subContentToggle {
+  display: block;
+}
+
+h1 {
+	margin: 0 0 10px;
+	font-size: 4em;
+	line-height: 1em;
+	font-weight: normal;
+}
+
+h3 {
+  font-weight: 700;
+}
+
+p {
+  margin: 0 0 15px;
+}
+
+a, a:visited, a:hover {
+  color: #18a0fb;
+  text-decoration: none;
+}
+
+.low #percentage {
+  color: #1EC677;
+}
+
+.medium #percentage {
+  color: #c7ca16;
+}
+
+.high #percentage {
+  color: #c55a1d;
+}
+
+button {
+	margin: 0 5px 0 0;
+	border: 1px solid #18a0fb;
+	border-radius: 7px;
+	padding: 8px 12px;
+	background: #18a0fb;
+	color: white;
+	cursor: pointer;
+}
+
+button.light {
+	border: 1px solid #18a0fb;
+	background: none;
+	color: #18a0fb;
+}
+
+em {
+  font-style: italic;
+  background-color: #ff00007c;
+}
+
+strong {
+  font-weight: 700;
+}
+</style>
