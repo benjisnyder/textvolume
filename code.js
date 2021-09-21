@@ -4,7 +4,7 @@
 // You can access browser APIs in the <script> tag inside "ui.html" which has a
 // full browser environment (see documentation).
 // This shows the HTML page in "ui.html".
-figma.showUI(__html__, { width: 300, height: 280 });
+figma.showUI(__html__, { width: 320, height: 300 });
 let rectStyle = {
     color: { r: 1, g: 0, b: 0 },
     opacity: 0.5

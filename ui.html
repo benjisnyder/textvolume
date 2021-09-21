@@ -1,18 +1,20 @@
-<div id="content">
+<div id="display">
   <h1 id="percentage"></h1>
   <p id="description"></p>
-  <button id="detect" class="light">Detect Text</button>
+</div>
+<div id="content">
   <button id="calculate">Calculate</button>
+  <button id="detect" class="light">Detect Text</button>
 </div>
 <div id="subContent"> 
   <a id="showMore" href="">Show Info</a>
   <div id="subContentToggle">
     <h3>Instructions</h3>
     <ol>
-      <li>Grab the Figma frame you're interested in by the reigns.</li>
-      <li>Give the "Detect Text" button a try or start drawing rectangles all over the place, focusing on the areas that have text.</li>
+      <li>Select the Figma frame you're interested in.</li>
+      <li>Give the "Detect Text" button a try or start highlighting text with rectangle shapes.</li>
       <li>Set the rectangles to have <em>#ff0000 fill with 0.5 opacity</em>. This is important because it's how the plugin recognizes your rectangles from all the other goodies in the frame. If you happen to have rectangles with this fill already in your frame, you'll want to change them temporarily.</li>
-      <li>Once you have your beautiful rectangles accurately covering all of the text, click that "Calculate" button.</li>
+      <li>Once you have your beautiful rectangles accurately covering all of the text, give the "Calculate" button a boop.</li>
     </ol>
     <p><strong>Note:</strong> Detect Text will render rectangles on top of any existing text boxes. Those text boxes might not be the same size as the text you care to measure, so be sure to double check the rectangle sizes.</p>
     <h3>About</h3>
@@ -55,7 +57,7 @@ onmessage = event => {
 }
 
 function setState(data) {
-  let contentEl = document.getElementById('content');
+  let displayEl = document.getElementById('display');
   let percentageEl = document.getElementById('percentage');
   let descriptionEl = document.getElementById('description');
   let descriptionText = '';
@@ -79,85 +81,102 @@ function setState(data) {
 
   percentageEl.innerHTML = data.percent;
   descriptionEl.innerHTML = descriptionText;
-  contentEl.className = volumeLevel;
+  displayEl.className = volumeLevel;
 }
 </script>
 
 <style>
-* {
-	font:14px/18px Inter,sans-serif;
-}
+  body {
+    margin: 0;
+  }
 
-#content, #subContent {
-  padding: 5px 5px 15px;
-}
+  * {
+    font:14px/18px Inter,sans-serif;
+  }
 
-#subContent.true #showMore {
-  text-decoration: underline;
-}
+  #content, #subContent {
+    padding: 0 10px 15px;
+  }
 
-#subContentToggle {
-  display: none;
-}
+  #display {
+    margin: 0 0 10px;
+    padding: 10px;
+    background: #ececec;
+  }
 
-#subContent.true #subContentToggle {
-  display: block;
-}
+  #display p {
+    margin-bottom: 0;
+  }
 
-h1 {
-	margin: 0 0 10px;
-	font-size: 4em;
-	line-height: 1em;
-	font-weight: normal;
-}
+  #display.low {
+    background: #1EC677;
+    color: #fff;
+  }
 
-h3 {
-  font-weight: 700;
-}
+  #display.medium {
+    background: #c7ca16;
+    color: #fff;
+  }
 
-p {
-  margin: 0 0 15px;
-}
+  #display.high {
+    background: #c55a1d;
+    color: #fff;
+  }
 
-a, a:visited, a:hover {
-  color: #18a0fb;
-  text-decoration: none;
-}
+  #subContent.true #showMore {
+    text-decoration: underline;
+  }
 
-.low #percentage {
-  color: #1EC677;
-}
+  #subContentToggle {
+    display: none;
+  }
 
-.medium #percentage {
-  color: #c7ca16;
-}
+  #subContent.true #subContentToggle {
+    display: block;
+  }
 
-.high #percentage {
-  color: #c55a1d;
-}
+  h1 {
+    margin: 0 0 10px;
+    font-size: 4em;
+    line-height: 1em;
+    font-weight: normal;
+  }
 
-button {
-	margin: 0 5px 0 0;
-	border: 1px solid #18a0fb;
-	border-radius: 7px;
-	padding: 8px 12px;
-	background: #18a0fb;
-	color: white;
-	cursor: pointer;
-}
+  h3 {
+    font-weight: 700;
+  }
 
-button.light {
-	border: 1px solid #18a0fb;
-	background: none;
-	color: #18a0fb;
-}
+  p {
+    margin: 0 0 15px;
+  }
 
-em {
-  font-style: italic;
-  background-color: #ff00007c;
-}
+  a, a:visited, a:hover {
+    color: #18a0fb;
+    text-decoration: none;
+  }
 
-strong {
-  font-weight: 700;
-}
+  button {
+    margin: 0 5px 0 0;
+    border: 1px solid #18a0fb;
+    border-radius: 7px;
+    padding: 8px 12px;
+    background: #18a0fb;
+    color: white;
+    cursor: pointer;
+  }
+
+  button.light {
+    border: 1px solid #18a0fb;
+    background: none;
+    color: #18a0fb;
+  }
+
+  em {
+    font-style: italic;
+    background-color: #ff00007c;
+  }
+
+  strong {
+    font-weight: 700;
+  }
 </style>
