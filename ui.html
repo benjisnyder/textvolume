@@ -5,6 +5,7 @@
 <div id="content">
   <button id="calculate">Calculate</button>
   <button id="detect" class="light">Detect Text</button>
+  <button id="delete" class="light">Clear Measurements</button>
 </div>
 <div id="subContent"> 
   <a id="showMore" href="">Show Info</a>
@@ -43,6 +44,14 @@ document.getElementById('detect').onclick = () => {
   parent.postMessage({ pluginMessage: { type: 'detect' } }, '*');
 }
 
+document.getElementById('delete').onclick = () => {
+  setState({
+    percent : '0%',
+    value : 0
+  });
+  parent.postMessage({ pluginMessage: { type: 'delete' } }, '*');
+}
+
 document.getElementById('calculate').onclick = () => {
   parent.postMessage({ pluginMessage: { type: 'calculate' } }, '*');
 }
@@ -63,7 +72,7 @@ function setState(data) {
   let descriptionText = '';
   let volumeLevel = 'none';
 
-  if (data.value === 0) {
+  /*if (data.value === 0) {
     descriptionText = "No text detected."
   } else if (data.value < 15) {
     descriptionText = "This is a fine amount of text."
@@ -77,7 +86,7 @@ function setState(data) {
   } else if (data.value > 36) {
     descriptionText = "Research has shown that this text volume can increase cognitive load."
     volumeLevel = "high";
-  }
+  }*/
 
   percentageEl.innerHTML = data.percent;
   descriptionEl.innerHTML = descriptionText;
