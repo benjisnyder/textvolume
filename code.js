@@ -4,7 +4,7 @@
 // You can access browser APIs in the <script> tag inside "ui.html" which has a
 // full browser environment (see documentation).
 // This shows the HTML page in "ui.html".
-figma.showUI(__html__, { width: 468, height: 512 });
+figma.showUI(__html__, { width: 368, height: 400 });
 const rectLabel = "TVDELETE" + Date.now(); // give the rectangles a unique name so there are no conflicts w/ the user's layer names
 const rootNode = figma.root;
 let rectStyle = {

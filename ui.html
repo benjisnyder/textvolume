@@ -85,9 +85,10 @@ function setState(data) {
 <style>
   body {
     margin: 0;
-    padding: 30px 40px 0;
+    padding: 10px 20px 0;
     text-align: center;
     font-family: Circular Pro, sans-serif;
+    transform: scale(.90);
   }
 
   * {
@@ -96,7 +97,6 @@ function setState(data) {
 
   #display {
     margin: 0 0 30px;
-    padding: 10px;
   }
 
   #display p {
@@ -106,7 +106,7 @@ function setState(data) {
 
   #description {
     height: 80px;
-    font-size: 20px;
+    font-size: 18px;
     line-height: 1.25em;
   }
 
@@ -130,7 +130,10 @@ function setState(data) {
     margin: 0 0 15px;
   }
 
-  a, a:visited, a:hover, a:active {
+  a, 
+  a:visited, 
+  a:hover, 
+  a:active {
     color: #74758C;
     text-decoration: none;
   }
@@ -148,6 +151,10 @@ function setState(data) {
     cursor: pointer;
     font-weight: 700;
     color: #14A961;
+  }
+
+  button:hover {
+    background: #C0F7DD;
   }
 
   .button-group {
@@ -175,6 +182,11 @@ function setState(data) {
 
   button.light {
     border: none;
+  }
+
+  button.light:hover {
+    background:none;
+    text-decoration: underline;
   }
 
   em {
