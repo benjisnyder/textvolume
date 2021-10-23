@@ -2,25 +2,18 @@
   <h1 id="percentage"></h1>
   <p id="description"></p>
 </div>
-<div id="content">
-  <button id="calculate">Calculate</button>
-  <button id="detect" class="light">Detect Text</button>
-  <button id="delete" class="light">Clear Measurements</button>
+<div id="meter" class="card">
+  <span id="notch" class="chevron bottom"></span>
+  <div id="meter-gradient"></div>
 </div>
-<div id="subContent"> 
-  <a id="showMore" href="">Show Info</a>
-  <div id="subContentToggle">
-    <h3>Instructions</h3>
-    <ol>
-      <li>Select the Figma frame you're interested in.</li>
-      <li>Give the "Detect Text" button a try or start highlighting text with rectangle shapes.</li>
-      <li>Set the rectangles to have <em>#ff0000 fill with 0.5 opacity</em>. This is important because it's how the plugin recognizes your rectangles from all the other goodies in the frame. If you happen to have rectangles with this fill already in your frame, you'll want to change them temporarily.</li>
-      <li>Once you have your beautiful rectangles accurately covering all of the text, give the "Calculate" button a boop.</li>
-    </ol>
-    <p><strong>Note:</strong> Detect Text will render rectangles on top of any existing text boxes. Those text boxes might not be the same size as the text you care to measure, so be sure to double check the rectangle sizes.</p>
-    <h3>About</h3>
-    <p>Research has shown...</p>
+<div id="cluster" class="card">
+  <div class="button-group">
+      <button id="calculate" class="first">Calculate</button>
+      <button id="detect" class="last">Detect Text</button>
   </div>
+  <button id="delete" class="light">Clear Detections</button>
+</div>
+<a id="instructions" href="">Instructions</a>
 </div>
 <script>
 let showInstructions = false;
@@ -29,16 +22,6 @@ setState({
   percent : '0%',
   value : 0
 });
-
-document.getElementById('showMore').onclick = (evt) => {
-  let toggleEl = document.getElementById('subContent');
-
-  showInstructions = !showInstructions;
-  toggleEl.className = ''+showInstructions;
-  
-  evt.preventDefault();
-  return false;
-}
 
 document.getElementById('detect').onclick = () => {
   parent.postMessage({ pluginMessage: { type: 'detect' } }, '*');
@@ -67,27 +50,32 @@ onmessage = event => {
 
 function setState(data) {
   let displayEl = document.getElementById('display');
+  let notchEl = document.getElementById('notch');
   let percentageEl = document.getElementById('percentage');
   let descriptionEl = document.getElementById('description');
   let descriptionText = '';
   let volumeLevel = 'none';
 
-  /*if (data.value === 0) {
-    descriptionText = "No text detected."
-  } else if (data.value < 15) {
-    descriptionText = "This is a fine amount of text."
+  if (data.value === 0) {
+    descriptionText = "No text detected. If this screen is entirely visual, ensure alt text is provided for assistive reading devices."
+  } else if (data.value <= 10) {
+    descriptionText = "This amount of text is ideal for experiences with low stakes, low friction, and rapid comprehension."
     volumeLevel = "low";
-  } else if (data.value < 25) {
-    descriptionText = "Not bad, you could add more if you wanted."
+  } else if (data.value <= 39) {
+    descriptionText = "This is a moderate amount of text that’s suitable for fulfilling informational needs."
     volumeLevel = "low";
-  } else if (data.value < 36) {
-    descriptionText = "The text volume is getting a little heavy."
+  } else if (data.value <= 45) {
+    descriptionText = "This is the average amount of text in many applications."
     volumeLevel = "medium";
-  } else if (data.value > 36) {
-    descriptionText = "Research has shown that this text volume can increase cognitive load."
+  } else if (data.value <= 70) {
+    descriptionText = "You’re reaching the upper limit of how much text a person will be able to easily comprehend and act on in a single screen."
     volumeLevel = "high";
-  }*/
+  } else if (data.value > 70) {
+    descriptionText = "Too much text. Alert your nearest content designer."
+    volumeLevel = "high";
+  }
 
+  notchEl.style = 'left: ' + data.value + '%';
   percentageEl.innerHTML = data.percent;
   descriptionEl.innerHTML = descriptionText;
   displayEl.className = volumeLevel;
@@ -97,58 +85,41 @@ function setState(data) {
 <style>
   body {
     margin: 0;
+    padding: 30px 40px 0;
+    text-align: center;
+    font-family: Circular Pro, sans-serif;
   }
 
   * {
     font:14px/18px Inter,sans-serif;
   }
 
-  #content, #subContent {
-    padding: 0 10px 15px;
-  }
-
   #display {
-    margin: 0 0 10px;
+    margin: 0 0 30px;
     padding: 10px;
-    background: #ececec;
   }
 
   #display p {
     margin-bottom: 0;
+    color: #74758C;
   }
 
-  #display.low {
-    background: #1EC677;
-    color: #fff;
+  #description {
+    height: 80px;
+    font-size: 20px;
+    line-height: 1.25em;
   }
 
-  #display.medium {
-    background: #c7ca16;
-    color: #fff;
-  }
-
-  #display.high {
-    background: #c55a1d;
-    color: #fff;
-  }
-
-  #subContent.true #showMore {
-    text-decoration: underline;
-  }
-
-  #subContentToggle {
-    display: none;
-  }
-
-  #subContent.true #subContentToggle {
-    display: block;
+  .card {
+    margin: 0 0 25px;
   }
 
   h1 {
-    margin: 0 0 10px;
-    font-size: 4em;
+    margin: 0 0 20px;
+    font-size: 80px;
+    font-weight: 700;
     line-height: 1em;
-    font-weight: normal;
+    color: #1EC677;
   }
 
   h3 {
@@ -159,25 +130,51 @@ function setState(data) {
     margin: 0 0 15px;
   }
 
-  a, a:visited, a:hover {
-    color: #18a0fb;
+  a, a:visited, a:hover, a:active {
+    color: #74758C;
     text-decoration: none;
   }
 
+  a:hover {
+    text-decoration: underline;
+  }
+
   button {
-    margin: 0 5px 0 0;
-    border: 1px solid #18a0fb;
-    border-radius: 7px;
-    padding: 8px 12px;
-    background: #18a0fb;
+    border: 1px solid #1EC677;
+    border-radius: 45px;
+    padding: 12px;
+    background:white;
     color: white;
     cursor: pointer;
+    font-weight: 700;
+    color: #14A961;
+  }
+
+  .button-group {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    margin: 0 0 10px;
+    padding: 0px;
+  }
+
+  .button-group button {
+    flex: none;
+    order: 0;
+    flex-grow: 1;
+  }
+
+  .button-group .first {
+    border-right: none;;
+    border-radius: 45px 0 0 45px;
+  }
+
+  .button-group .last {
+    border-radius: 0 45px 45px 0;
   }
 
   button.light {
-    border: 1px solid #18a0fb;
-    background: none;
-    color: #18a0fb;
+    border: none;
   }
 
   em {
@@ -187,5 +184,59 @@ function setState(data) {
 
   strong {
     font-weight: 700;
+  }
+
+  #meter {
+    position: relative;
+    width: 100%;
+    height: 12px;
+  }
+
+  #meter-gradient {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 12px;
+    background: linear-gradient(270deg, #1EC677 1.56%, #F9FFFC 100%);
+    border-radius: 10px;
+  }
+
+  #notch {
+    position: absolute;
+    top: -25px;
+    left: 0;
+    width: 8px;
+    height: 8px;
+    translate: (-8px, 0);
+  }
+
+  .chevron::before {
+    border-style: solid;
+    border-width: 0.25em 0.25em 0 0;
+    content: '';
+    display: inline-block;
+    height: 0.45em;
+    left: 0.15em;
+    position: relative;
+    top: 0.15em;
+    transform: rotate(-45deg);
+    vertical-align: top;
+    width: 0.45em;
+  }
+
+  .chevron.right:before {
+    left: 0;
+    transform: rotate(45deg);
+  }
+
+  .chevron.bottom:before {
+    top: 0;
+    transform: rotate(135deg);
+  }
+
+  .chevron.left:before {
+    left: 0.25em;
+    transform: rotate(-135deg);
   }
 </style>
