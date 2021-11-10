@@ -6,7 +6,7 @@
 // full browser environment (see documentation).
 
 // This shows the HTML page in "ui.html".
-figma.showUI(__html__, {width: 368, height: 400});
+figma.showUI(__html__, {width: 368, height: 415});
 
 const rectLabel = "TVDELETE" + Date.now(); // give the rectangles a unique name so there are no conflicts w/ the user's layer names
 const rootNode = figma.root;

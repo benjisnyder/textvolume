@@ -13,7 +13,7 @@
   </div>
   <button id="delete" class="light">Clear Detections</button>
 </div>
-<a id="instructions" href="">Instructions</a>
+<a target="_blank" id="instructions" href="https://jjfoxbox.medium.com/how-to-use-chimes-text-volume-plugin-647ea0596b8">Intructions</a>
 </div>
 <script>
 let showInstructions = false;
@@ -56,22 +56,25 @@ function setState(data) {
   let descriptionText = '';
   let volumeLevel = 'none';
 
-  if (data.value === 0) {
-    descriptionText = "No text detected. If this screen is entirely visual, ensure alt text is provided for assistive reading devices."
-  } else if (data.value <= 10) {
-    descriptionText = "This amount of text is ideal for experiences with low stakes, low friction, and rapid comprehension."
+  if (data.value < 1) {
+    descriptionText = "No text detected. If this screen is entirely visual, ensure alt text is provided for people using assistive reading devices."
+  } else if (data.value <= 6) {
+    descriptionText = "1-6% isn't bad, you could add more if you wanted to."
     volumeLevel = "low";
-  } else if (data.value <= 39) {
-    descriptionText = "This is a moderate amount of text that’s suitable for fulfilling informational needs."
+  } else if (data.value <= 14) {
+    descriptionText = "7-14% is ideal for quick interactions like confirmations or light onboarding moments."
     volumeLevel = "low";
-  } else if (data.value <= 45) {
-    descriptionText = "This is the average amount of text in many applications."
+  } else if (data.value <= 29) {
+    descriptionText = "15-29% is a decent range for satisfying low-stakes informational needs."
+    volumeLevel = "low";
+  } else if (data.value <= 40) {
+    descriptionText = "30-40% is the average amount of text on the first screen of many popular apps. See instructions for more information."
     volumeLevel = "medium";
   } else if (data.value <= 70) {
-    descriptionText = "You’re reaching the upper limit of how much text a person will be able to easily comprehend and act on in a single screen."
+    descriptionText = "41-70% is the upper limit of text a person can easily process on one screen. Validate with research and testing."
     volumeLevel = "high";
   } else if (data.value > 70) {
-    descriptionText = "Too much text. Alert your nearest content designer."
+    descriptionText = "Anything more than 70% might be too much text. Alert your nearest content designer."
     volumeLevel = "high";
   }
 
@@ -92,22 +95,22 @@ function setState(data) {
   }
 
   * {
-    font:14px/18px Inter,sans-serif;
+    font:16px/20px Inter,sans-serif;
   }
 
   #display {
-    margin: 0 0 30px;
+    margin: 0 0 40px;
   }
 
   #display p {
     margin-bottom: 0;
-    color: #74758C;
+    color: #565767;
   }
 
   #description {
     height: 80px;
     font-size: 18px;
-    line-height: 1.25em;
+    line-height: 1.4em;
   }
 
   .card {
@@ -119,7 +122,7 @@ function setState(data) {
     font-size: 80px;
     font-weight: 700;
     line-height: 1em;
-    color: #1EC677;
+    color: #0C643A;
   }
 
   h3 {
@@ -134,7 +137,7 @@ function setState(data) {
   a:visited, 
   a:hover, 
   a:active {
-    color: #74758C;
+    color: #565767;
     text-decoration: none;
   }
 
@@ -143,14 +146,14 @@ function setState(data) {
   }
 
   button {
-    border: 1px solid #1EC677;
+    border: 1px solid #0C643A;
     border-radius: 45px;
     padding: 12px;
     background:white;
     color: white;
     cursor: pointer;
     font-weight: 700;
-    color: #14A961;
+    color: #0C643A;
   }
 
   button:hover {
